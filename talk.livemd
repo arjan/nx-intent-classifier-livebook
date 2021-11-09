@@ -10,6 +10,7 @@
 Mix.install([
   {:req, "~> 0.2.0"},
   {:axon, "~> 0.1.0-dev", github: "elixir-nx/axon", branch: "main"},
+  {:exla, "~> 0.1.0-dev", github: "elixir-nx/nx", sparse: "exla"},
   {:nx, "~> 0.1.0-dev", github: "elixir-nx/nx", sparse: "nx", override: true}
 ])
 ```
@@ -20,16 +21,23 @@ remote: Enumerating objects: 2646, done.
 remote: Counting objects: 100% (1822/1822), done.        
 remote: Compressing objects: 100% (1077/1077), done.        
 remote: Total 2646 (delta 1351), reused 1120 (delta 726), pack-reused 824        
+* Getting exla (https://github.com/elixir-nx/nx.git)
+remote: Enumerating objects: 10273, done.        
+remote: Counting objects: 100% (1891/1891), done.        
+remote: Compressing objects: 100% (197/197), done.        
+remote: Total 10273 (delta 1775), reused 1713 (delta 1691), pack-reused 8382        
+origin/HEAD set to main
 * Getting nx (https://github.com/elixir-nx/nx.git)
-remote: Enumerating objects: 10260, done.        
-remote: Counting objects: 100% (1932/1932), done.        
-remote: Compressing objects: 100% (191/191), done.        
-remote: Total 10260 (delta 1822), reused 1757 (delta 1738), pack-reused 8328        
+remote: Enumerating objects: 10273, done.        
+remote: Counting objects: 100% (1945/1945), done.        
+remote: Compressing objects: 100% (194/194), done.        
+remote: Total 10273 (delta 1831), reused 1770 (delta 1748), pack-reused 8328        
 origin/HEAD set to main
 Resolving Hex dependencies...
 Dependency resolution completed:
 New:
   castore 0.1.13
+  elixir_make 0.6.3
   finch 0.8.3
   jason 1.2.2
   mime 2.0.2
@@ -39,7 +47,10 @@ New:
   req 0.2.0
   table_rex 3.1.1
   telemetry 1.0.0
+  xla 0.2.0
 * Getting req (Hex package)
+* Getting xla (Hex package)
+* Getting elixir_make (Hex package)
 * Getting table_rex (Hex package)
 * Getting finch (Hex package)
 * Getting jason (Hex package)
@@ -63,6 +74,28 @@ Generated nx app
 ==> jason
 Compiling 8 files (.ex)
 Generated jason app
+==> elixir_make
+Compiling 1 file (.ex)
+Generated elixir_make app
+==> xla
+Compiling 2 files (.ex)
+Generated xla app
+
+13:30:43.740 [info]  Found a matching archive (xla_extension-x86_64-linux-cpu.tar.gz), going to download it
+
+13:30:52.184 [info]  Successfully downloaded the XLA archive
+==> exla
+Unpacking /home/arjan/.cache/xla/0.2.0/cache/download/xla_extension-x86_64-linux-cpu.tar.gz into /home/arjan/.cache/mix/installs/elixir-1.12.2-erts-12.1.3/a04fb5c0bd902d7099cad6291c1b8daa/deps/exla/exla/cache
+mkdir -p /home/arjan/.cache/mix/installs/elixir-1.12.2-erts-12.1.3/a04fb5c0bd902d7099cad6291c1b8daa/_build/dev/lib/exla/priv
+ln -sf /home/arjan/.cache/mix/installs/elixir-1.12.2-erts-12.1.3/a04fb5c0bd902d7099cad6291c1b8daa/deps/exla/exla/cache/xla_extension/lib /home/arjan/.cache/mix/installs/elixir-1.12.2-erts-12.1.3/a04fb5c0bd902d7099cad6291c1b8daa/_build/dev/lib/exla/priv/lib
+g++ -fPIC -I/home/arjan/.asdf/installs/erlang/24.1.3/erts-12.1.3/include -isystem cache/xla_extension/include -O3 -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wno-comment -shared -std=c++14 c_src/exla/exla.cc c_src/exla/exla_nif_util.cc c_src/exla/exla_client.cc -o /home/arjan/.cache/mix/installs/elixir-1.12.2-erts-12.1.3/a04fb5c0bd902d7099cad6291c1b8daa/_build/dev/lib/exla/priv/libexla.so -L/home/arjan/.cache/mix/installs/elixir-1.12.2-erts-12.1.3/a04fb5c0bd902d7099cad6291c1b8daa/_build/dev/lib/exla/priv/lib -lxla_extension -Wl,-rpath,'$ORIGIN/lib'
+c_src/exla/exla_client.cc: In function ‘tensorflow::StatusOr<std::vector<exla::ExlaBuffer*> > exla::UnpackRunArguments(ErlNifEnv*, ERL_NIF_TERM, exla::ExlaClient*, int)’:
+c_src/exla/exla_client.cc:89:19: warning: redundant move in return statement [-Wredundant-move]
+   89 |   return std::move(arg_buffers);
+      |          ~~~~~~~~~^~~~~~~~~~~~~
+c_src/exla/exla_client.cc:89:19: note: remove ‘std::move’ call
+Compiling 15 files (.ex)
+Generated exla app
 ==> castore
 Compiling 1 file (.ex)
 Generated castore app
@@ -90,6 +123,8 @@ Generated axon app
 ```output
 :ok
 ```
+
+## The embeddings server
 
 The embeddings server is a python program that runs on the following URL:
 
@@ -137,12 +172,13 @@ dim = bytes |> Nx.from_binary({:f, 32}) |> Nx.size()
 
 Okay, so that works, we can make a tensor out of a sentence. In the next part we are going to extend this to translate a list of annotated sentences into an array of vectors with their corresponding labels.
 
-<!-- livebook:{"break_markdown":true} -->
+## Loading the training data
 
+Now, we are going to translate a list of annotated sentences into an array of vectors with their corresponding labels.
 This is the input file:
 
 ```elixir
-"disco.json" |> File.read!() |> Jason.decode!()
+json_data = "disco.json" |> File.read!() |> Jason.decode!()
 ```
 
 ```output
@@ -339,9 +375,7 @@ Lets transform it into a list of labels and a list of sentences:
 
 ```elixir
 {labels, utterances} =
-  "disco.json"
-  |> File.read!()
-  |> Jason.decode!()
+  json_data
   |> Enum.flat_map(fn %{"id" => id, "training_data" => training_data} ->
     training_data |> Enum.map(&{id, &1})
   end)
@@ -377,28 +411,51 @@ Lets transform it into a list of labels and a list of sentences:
   "what is your office address?", ...]}
 ```
 
-First of all, the labels. We want to encode these as numbers instead of text labels, and make them into a tensor.
-
-```elixir
-lookup = labels |> Enum.uniq() |> Enum.with_index() |> Map.new()
-labels_tensor = labels |> Enum.map(&lookup[&1]) |> Nx.tensor()
-```
-
-```output
-#Nx.Tensor<
-  s64[197]
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, ...]
->
-```
-
 Let's also save the number of samples:
 
 ```elixir
-n_samples = Enum.count(labels)
+n_samples = Enum.count(utterances)
 ```
 
 ```output
 197
+```
+
+And the number of labels:
+
+```elixir
+n_labels = labels |> Enum.uniq() |> Enum.count()
+```
+
+```output
+30
+```
+
+## Encoding the training data
+
+First of all, the labels. We want to encode these as numbers instead of text labels, 
+and make them into a [1-hot encoded](https://en.wikipedia.org/wiki/One-hot) tensor:
+
+```elixir
+lookup = labels |> Enum.uniq() |> Enum.with_index() |> Map.new()
+
+train_labels =
+  labels
+  |> Enum.map(&lookup[&1])
+  |> Nx.tensor()
+  |> Nx.new_axis(-1)
+  |> Nx.equal(Nx.tensor(Enum.to_list(0..(n_labels - 1))))
+```
+
+```output
+#Nx.Tensor<
+  u8[197][30]
+  [
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...],
+    ...
+  ]
+>
 ```
 
 Now, lets convert the utterances to a tensor. We do this the same way as before, but now with a POST method to the embeddings server because we are encoding many sentences in one request:
@@ -419,15 +476,119 @@ data = Req.post!(server, body, headers: headers).body
 ... and make it into a tensor again, shaped accordingly:
 
 ```elixir
-Nx.from_binary(data, {:f, 32}) |> Nx.reshape({dim, n_samples})
+train_data = Nx.from_binary(data, {:f, 32}) |> Nx.reshape({n_samples, dim})
 ```
 
 ```output
 #Nx.Tensor<
-  f32[768][197]
+  f32[197][768]
   [
     [5.666904617100954e-4, 0.02100442349910736, 0.01437007449567318, -0.014292150735855103, 0.007979090325534344, 0.008054773323237896, -0.026679566130042076, -0.06169477477669716, -0.028981786221265793, -0.02080029994249344, 0.059040460735559464, 0.030339134857058525, 0.04639088734984398, 0.02764446847140789, 0.0678764060139656, -0.011913690716028214, 0.01239096187055111, -0.09189336746931076, 0.040982410311698914, -0.01296217367053032, -0.041586246341466904, 0.04403846710920334, -0.019316760823130608, 0.007623355370014906, -0.008245360106229782, 0.02004585973918438, 0.02365204319357872, 0.009900560602545738, 0.02454863116145134, 0.046415530145168304, 0.008115795440971851, -0.030796034261584282, 0.018966753035783768, -0.05050976201891899, 1.6579461998844636e-6, 0.010591953992843628, 0.02351311594247818, 3.382427166798152e-5, -0.0018564224010333419, -0.03629390150308609, -0.006299884989857674, 0.01904321275651455, 0.03704962879419327, 0.037280965596437454, 0.0197854433208704, -0.043206095695495605, 0.006026810966432095, 0.05071476846933365, -0.037018053233623505, 0.02615806832909584, ...],
     ...
   ]
+>
+```
+
+## Training the classifier
+
+Alright! now the fun stuff can start. let's use *Axon* to train a classifier. I use a pretty
+standard neural net here with *softmax* activation. You know what they say about AI:
+
+![XKCD AI](https://imgs.xkcd.com/comics/machine_learning.png)
+
+But for reference, I adapted the model below from the 
+[Axon MNIST example](https://github.com/elixir-nx/axon/blob/main/examples/mnist.exs):
+
+```elixir
+model =
+  Axon.input({nil, dim})
+  |> Axon.dense(128, activation: :relu)
+  |> Axon.dense(n_labels, activation: :softmax)
+```
+
+```output
+--------------------------------------------------
+                      Model
+==================================================
+ Layer                    Shape        Parameters
+==================================================
+ input_34 ( input )       {nil, 768}   0
+ dense_37 ( dense )       {nil, 128}   98432
+ relu_38 ( relu )         {nil, 128}   0
+ dense_41 ( dense )       {nil, 30}    3870
+ softmax_42 ( softmax )   {nil, 30}    0
+--------------------------------------------------
+
+```
+
+And let's train it
+
+```elixir
+epochs = 5
+bs = 30
+
+data =
+  Stream.zip(
+    Nx.to_batched_list(train_data, bs),
+    Nx.to_batched_list(train_labels, bs)
+  )
+
+model_state =
+  model
+  |> Axon.Loop.trainer(:categorical_cross_entropy, Axon.Optimizers.adamw(0.005))
+  |> Axon.Loop.metric(:accuracy, "Accuracy")
+  |> Axon.Loop.run(data, epochs: epochs, compiler: EXLA)
+```
+
+```output
+%{
+  "dense_37" => %{
+    "bias" => #Nx.Tensor<
+      f32[128]
+      [0.020400365814566612, 0.048191919922828674, 0.0540957972407341, 0.04765355959534645, 0.03120308928191662, 0.031533386558294296, 0.022459227591753006, 0.050039730966091156, -0.00962789636105299, 0.008520999923348427, 0.03116649016737938, -0.04660087823867798, 0.06441569328308105, 0.010220588184893131, 0.05551945045590401, 6.383214495144784e-4, 0.050730135291814804, 0.02906075306236744, 0.05864914506673813, 0.03661656007170677, 0.04693073779344559, 0.04163669794797897, 0.049154479056596756, 0.02751206047832966, 0.06800072640180588, 0.012582805007696152, 0.028091667219996452, 0.07032354176044464, 0.0563310831785202, 0.03014185093343258, 0.01447803433984518, 0.014158119447529316, 0.05148471146821976, 0.03654827922582626, 0.015584579668939114, 0.045927368104457855, 0.05835537984967232, 0.04151109606027603, 0.037117715924978256, 0.051051244139671326, 0.026006434112787247, 0.040546778589487076, 0.008266953751444817, 0.006338610779494047, 0.049346812069416046, 0.0418078787624836, 0.04805704951286316, 0.031073102727532387, ...]
+>,
+    "kernel" => #Nx.Tensor<
+      f32[768][128]
+      [
+        [0.0062026712112128735, -0.04010934382677078, 0.0046662879176437855, 0.022031083703041077, 0.03995729237794876, 0.013229181990027428, -0.014577304944396019, 0.07637137174606323, -0.1140531599521637, 0.025343893095850945, -0.028376178815960884, 0.07208544760942459, 0.08250350505113602, -0.12864522635936737, 0.06333932280540466, -0.12541870772838593, 0.031114904209971428, 0.05705086141824722, 0.006103913765400648, 0.07779467105865479, -0.001961685949936509, -0.10159791260957718, 0.09919264167547226, -0.01485113799571991, 0.02951543591916561, -0.1093679741024971, 0.14137300848960876, 0.04335366562008858, 0.042745061218738556, -0.07011519372463226, -0.09443902969360352, 0.007183277513831854, 0.05645110085606575, -0.053147945553064346, 0.010145071893930435, 0.04448825120925903, -0.0657515898346901, 0.1261843889951706, 0.10210259258747101, -0.17210666835308075, 0.11582188308238983, 0.12593713402748108, -0.03213774785399437, 0.06860153377056122, 0.08262949436903, 0.07198059558868408, -0.08208569139242172, ...],
+        ...
+      ]
+>
+  },
+  "dense_41" => %{
+    "bias" => #Nx.Tensor<
+      f32[30]
+      [0.004473819397389889, 0.006431472487747669, -0.004750964231789112, 0.021910374984145164, 0.015215935185551643, 0.0044441549107432365, 0.016343241557478905, -0.02596771903336048, -0.043138958513736725, -0.010279826819896698, -0.0868229940533638, 0.007658535614609718, -0.02394505776464939, -0.018935419619083405, -0.09852370619773865, -0.07645069807767868, -0.049501024186611176, -0.058357130736112595, -0.024590767920017242, -0.062288593500852585, -0.023420309647917747, -0.02038206346333027, -0.0066290064714848995, -0.042693719267845154, 9.385761222802103e-4, -0.024525174871087074, -0.01980450563132763, -0.04517935588955879, -0.006835967302322388, -0.04016789793968201]
+>,
+    "kernel" => #Nx.Tensor<
+      f32[128][30]
+      [
+        [-0.1609976589679718, -0.11383713036775589, 0.11177187412977219, -0.06567420810461044, -0.31251057982444763, -0.11777941882610321, -0.026573924347758293, -0.2512653172016144, 0.06416691839694977, 0.031698767095804214, 0.007754284422844648, 0.07256227731704712, 0.22368274629116058, -0.08009498566389084, 0.046361323446035385, 0.06044214963912964, -0.11365664750337601, 0.022557483986020088, -0.15708641707897186, -0.24006138741970062, -0.034417539834976196, -0.2935161292552948, 0.12776729464530945, -0.2943473160266876, -0.18376383185386658, 0.07473977655172348, 0.005235983524471521, -0.021731218323111534, -0.09796734899282455, -0.06896378844976425],
+        [0.08084768056869507, -0.23588141798973083, 0.11992587894201279, -0.0675056129693985, 0.07028727233409882, 0.19487693905830383, -0.017311541363596916, -0.2688002288341522, -0.11773427575826645, 0.14037108421325684, 0.08768004179000854, 0.07569808512926102, 0.049880918115377426, -0.18758969008922577, -0.27252376079559326, -0.06478530168533325, ...],
+        ...
+      ]
+>
+  }
+}
+```
+
+Done! Now let's see if the classifier works...
+
+## Evaluation
+
+<!-- livebook:{"livebook_object":"cell_input","name":"test sentence","type":"text","value":"hello world"} -->
+
+```elixir
+utterance = IO.gets("test sentence: ") |> String.trim()
+
+test_tensor =
+  Req.get!(server <> "?q=" <> URI.encode(utterance)).body
+  |> Nx.from_binary({:f, 32})
+```
+
+```output
+#Nx.Tensor<
+  f32[768]
+  [0.026249703019857407, 0.013395590707659721, -0.004533158149570227, -0.02179143577814102, 0.05455191433429718, -0.004966455046087503, 0.006655629258602858, 0.0306262094527483, -0.0057629006914794445, -0.004562007263302803, -0.003313350025564432, -0.0484963059425354, -0.01136403251439333, 0.035077471286058426, 0.09309472143650055, -0.08668740838766098, 0.05108659714460373, 0.009886144660413265, -0.06356935948133469, -0.008550175465643406, 0.007054428104311228, -0.0038623828440904617, 0.024744290858507156, 0.04288496449589729, 0.03509416803717613, -0.029848242178559303, 0.010252568870782852, 0.022344909608364105, 0.020889967679977417, 0.009492211975157261, -0.03304436802864075, -0.012284141965210438, 0.05352891981601715, 0.025429198518395424, 2.0221782506268937e-6, -0.03419104218482971, 0.009610011242330074, -0.0164845772087574, 0.005609493236988783, -0.0042500682175159454, -0.022801246494054794, 0.04035472869873047, 0.0030519948340952396, 0.03137265890836716, -0.010812385939061642, -0.035570915788412094, 0.02229289896786213, 0.0016871250700205564, 0.00207726564258337, 0.02311626449227333, ...]
 >
 ```
