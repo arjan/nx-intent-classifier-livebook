@@ -1,0 +1,349 @@
+[
+  {
+    "id": "faq_about",
+    "training_data": [
+      "tell me something about yourself",
+      "what are you",
+      "i want to know everything about you",
+      "i want to know about you",
+      "why are you here",
+      "I want to know you better",
+      "describe yourself",
+      "talk about yourself",
+      "explain what you are",
+      "what is this exactly",
+      "are you a chatbot",
+      "i want to know more about you",
+      "can you introduce yourself",
+      "please introduce yourself",
+      "tell me about yourself"
+    ]
+  },
+  {
+    "id": "faq_purpose",
+    "training_data": [
+      "what is the purpose",
+      "i want to know what your purpose is",
+      "what is the idea?",
+      "what do you need from me?",
+      "what is the reason for your existence?",
+      "what do you want from me?",
+      "can you tell me what your purpose is?",
+      "what is the purpose exactly?",
+      "what is your purpose?",
+      "what is the idea with this"
+    ]
+  },
+  {
+    "id": "faq_about_us",
+    "training_data": [
+      "more details on this project",
+      "i have a question about the company",
+      "about the project",
+      "tell me about your company",
+      "can you tell some more about you guys",
+      "what do you guys do",
+      "give me more information about your game",
+      "i'm looking for more information about your company",
+      "who made this project",
+      "who made this game",
+      "who are the builders of this project",
+      "who are the creators of this game"
+    ]
+  },
+  {
+    "id": "faq_address",
+    "training_data": [
+      "where are you based?",
+      "what is the location of your company?",
+      "can you tell me the address of your company?",
+      "can you tell me the address?",
+      "what's your address exactly?",
+      "where are you?",
+      "in which country are you guys based?",
+      "where are you guys located?",
+      "on what address is your office?",
+      "on what street is your office?",
+      "what is your office address?",
+      "where is your office?",
+      "where are you located?",
+      "what is your address?"
+    ]
+  },
+  {
+    "id": "faq_contactdetails",
+    "training_data": [
+      "can you share with me your contact details",
+      "i want contact details",
+      "i want your contact information",
+      "how can i get in touch with you guys",
+      "how can i get in touch with your company",
+      "how can i reach you",
+      "do you have information about how to reach you",
+      "what are your contact details",
+      "I'm looking for your contact details",
+      "give me your contactdetails",
+      "give me your contact details"
+    ]
+  },
+  {
+    "id": "faq_email",
+    "training_data": [
+      "i would like to mail",
+      "I would like to mail to the sales department, do you have an email",
+      "how can i reach you by email?",
+      "what is your email address?",
+      "tell me your email",
+      "do you have an email address?",
+      "please give me your email",
+      "your email please",
+      "where can i send my emails to?",
+      "how can i find email address?",
+      "to which address can i send an email?",
+      "what is your email?"
+    ]
+  },
+  {
+    "id": "faq_phone",
+    "training_data": [
+      "can i call the service desk?",
+      "phone number",
+      "phonenumber",
+      "what is the phone number of the customer service department?",
+      "can i give you a call",
+      "i want to call the helpdesk",
+      "what is phone number of customer services",
+      "what is your phone number?",
+      "i want to give you a call",
+      "can i call you up?",
+      "how can i call you?"
+    ]
+  },
+  {
+    "id": "faq_what_do_i_need",
+    "training_data": [
+      "What do I need to join a distance disco?",
+      "What do I need to join?",
+      "How can I join?",
+      "What do I need"
+    ]
+  },
+  {
+    "id": "faq_how_does_it_work",
+    "training_data": [
+      "What am I supposed to do?",
+      "How does this work?",
+      "How does the disco work?",
+      "how does it work"
+    ]
+  },
+  {
+    "id": "faq_webcam_does_not_work",
+    "training_data": [
+      "My webcam does not work?",
+      "My laptop camera is not working",
+      "My webcam image stays black",
+      "i have no camera",
+      "my camera stays black",
+      "browser does not ask for camera permission"
+    ]
+  },
+  {
+    "id": "faq_black_screen",
+    "training_data": [
+      "I only see black screens?",
+      "I do not see any video frames"
+    ]
+  },
+  {
+    "id": "faq_mobile",
+    "training_data": [
+      "will it work on ipad",
+      "can I use my tablet?",
+      "can I use my android?",
+      "does it work on an android tablet?",
+      "Can I use my phone or tablet?",
+      "does it work on an iphone?",
+      "i want to view it on an ipad",
+      "i want it on an iphone"
+    ]
+  },
+  {
+    "id": "faq_freeze",
+    "training_data": [
+      "The music stopped / everything seems to freeze?",
+      "My computer froze",
+      "I do not see any video anymore",
+      "Everybody is frozen"
+    ]
+  },
+  {
+    "id": "faq_mic_is_off",
+    "training_data": [
+      "How do I switch on my mic?",
+      "I want to talk during the disco",
+      "can you talk during the disco",
+      "the sound is off",
+      "I cannot hear people",
+      "can I talk to other people while dancing?"
+    ]
+  },
+  {
+    "id": "faq_headphones",
+    "training_data": [
+      "Do I need headphones?",
+      "should I use headphones"
+    ]
+  },
+  {
+    "id": "faq_chat",
+    "training_data": [
+      "Can I chat during the disco?",
+      "I want to chat while we are dancing "
+    ]
+  },
+  {
+    "id": "faq_grid_view",
+    "training_data": [
+      "I only see one person very big?",
+      "I see one person very large",
+      "there is one person zoomed in"
+    ]
+  },
+  {
+    "id": "faq_zoom_in",
+    "training_data": [
+      "How can I zoom in on one person?",
+      "Can I view just one person?",
+      "I want to view only a single person"
+    ]
+  },
+  {
+    "id": "faq_skip_song",
+    "training_data": [
+      "I hate this song",
+      "What if I don't like a song",
+      "I want to go to the next song",
+      "next song please",
+      "skip this song"
+    ]
+  },
+  {
+    "id": "faq_pause",
+    "training_data": [
+      "I want to take a break to get some fresh drinks.",
+      "I want to take a break",
+      "I need to rest for a while"
+    ]
+  },
+  {
+    "id": "faq_own_music",
+    "training_data": [
+      "i want to listen to my own music",
+      "Can I use my own music with Distance Disco?",
+      "i want my own playlist",
+      "can I play a customized playlist?",
+      "can I connect spotify account?"
+    ]
+  },
+  {
+    "id": "faq_winning",
+    "training_data": [
+      "is there a prize to win?",
+      "what can I win?",
+      "how can I win this game?",
+      "i want a prize",
+      "I think I have won"
+    ]
+  },
+  {
+    "id": "faq_howmany",
+    "training_data": [
+      "How many people can join?",
+      "With how many persons can I participate?",
+      "How many folks can join together in the disco?",
+      "How many persons?",
+      "Is there a maximum capacity for a disco?",
+      "What is the best size for a disco?",
+      "How big can a disco become?",
+      "How many people can play the game?"
+    ]
+  },
+  {
+    "id": "faq_donate",
+    "training_data": [
+      "Can I still donate to your project?",
+      "I want to give you some money",
+      "I want to donate",
+      "I want to donate some money"
+    ]
+  },
+  {
+    "id": "faq_price",
+    "training_data": [
+      "How much does it cost?",
+      "How much do I have to pay?",
+      "Do I need money??",
+      "How much money does it cost?",
+      "What is the price for a distance disco?",
+      "What is the price?",
+      "Is the price to make a disco per person or total?",
+      "Do participants need to pay?",
+      "How much does everyone needs to pay?"
+    ]
+  },
+  {
+    "id": "faq_try_out",
+    "training_data": [
+      "Can I first try out the disco before buying?",
+      "Is there a trial version?",
+      "Can I test?",
+      "can I test a disco before I buy it",
+      "is there a way to try it out first"
+    ]
+  },
+  {
+    "id": "faq_change_time",
+    "training_data": [
+      "Is it possible to change the time of the disco?",
+      "I want to change the start time of the disco",
+      "I want to postpone the disco",
+      "can I make the disco start sooner",
+      "i want the disco to start earlier",
+      "can I make the disco start later? "
+    ]
+  },
+  {
+    "id": "faq_email_span",
+    "training_data": [
+      "i didn't receive an email after creating a disco",
+      "I don't get email messages",
+      "E-mail does not arrive",
+      "I did not get the confirmation mail"
+    ]
+  },
+  {
+    "id": "faq_playlist_option",
+    "training_data": [
+      "Do you have music for kids?",
+      "Do you have music for children?",
+      "Do you have a playlist for kids?",
+      "Do you have a playlist for children?",
+      "Is there a special version for children",
+      "Do you have a carnaval playlist?",
+      "What kind of music do you have?",
+      "What kind of songs can I expect?",
+      "Can I create a theme?",
+      ""
+    ]
+  },
+  {
+    "id": "faq_when_does_it_start",
+    "training_data": [
+      "When does the disco start?",
+      "Can I join the disco before it starts?",
+      "Is there a waiting room for people that come too early?",
+      "When does the disco open?"
+    ]
+  }
+]
