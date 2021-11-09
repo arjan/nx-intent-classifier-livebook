@@ -190,10 +190,7 @@
   },
   {
     "id": "faq_headphones",
-    "training_data": [
-      "Do I need headphones?",
-      "should I use headphones"
-    ]
+    "training_data": ["Do I need headphones?", "should I use headphones"]
   },
   {
     "id": "faq_chat",
@@ -344,6 +341,41 @@
       "Can I join the disco before it starts?",
       "Is there a waiting room for people that come too early?",
       "When does the disco open?"
+    ]
+  },
+  {
+    "id": "fallback",
+    "training_data": [
+      "forklar hvad du er",
+      "explain what you are",
+      "Rede über dich selbst",
+      "erkläre was du bist",
+      "habla de ti mismo",
+      "Kuvaile itseäsi",
+      "décrivez-vous",
+      "Ik wil alles van je weten",
+      "Jeg vil gerne eskalere til et menneske",
+      "jeg sætter pris på det",
+      "Danke, Mann",
+      "ja, ich bin sicher",
+      "das ist der, den ich meine",
+      "can we do that one more time please?",
+      "can i try again please",
+      "nothing",
+      "no don't stop",
+      "ponerse en contacto",
+      "eso es lo que quiero decir",
+      "ehdottomasti",
+      "ilmeisesti",
+      "Bonjour",
+      "Je vous salue",
+      "dankje schat",
+      "dank u voor uw hulp",
+      "dat is niet juist",
+      "geen van deze",
+      "niet deze",
+      "Verwijder alles",
+      "sla het over"
     ]
   }
 ]
