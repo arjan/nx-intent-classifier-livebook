@@ -1,6 +1,6 @@
 <!-- livebook:{"persist_outputs":true} -->
 
-# Building a classifier
+# Building an intent classifier using Nx, Axon and BERT
 
 ## Setup
 
